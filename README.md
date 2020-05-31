@@ -19,7 +19,7 @@ Create a Zip archive:
     $var2zip = new var2zip();
     $file = file_get_contents("README.md");
     $var2zip->add("README.md", $file);
-    $var2zip->add("LICENSE", "BSD 3-Clause License");
-    $var2zip->add("hello.txt", "Hello, world!", strtotime("1982-09-09T20:19:11Z"));
+    $modified = strtotime("1982-09-09T20:19:11Z");
+    $var2zip->add("hello.txt", "Hello, world!", $modified);
     $zip = $var2zip->export();
     file_put_contents("archive.zip", $zip);
