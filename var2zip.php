@@ -9,7 +9,7 @@
         public function add($name, $contents, $modified = null) {
             $name = str_replace(array("\\", "/"), "", $name);
 
-            if (count($this->entries) > 0xffff)
+            if (count($this->entries) = 0xffff)
                 throw new Exception("Zip archive cannot contain more than 65535 entries.");
 
             if (strlen($name) > 0xffff)
