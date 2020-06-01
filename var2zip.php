@@ -13,13 +13,16 @@
                 throw new Exception("Zip archive cannot contain more than 65535 entries.");
 
             if (strlen($name) > 0xffff)
-                throw new Exception("Zip archive entry names cannot exceed 65535 bytes.");
+                throw new Exception("Entry names cannot exceed 65535 bytes.");
 
             if (strlen($contents) > 0xffffffff)
-                throw new Exception("Zip archive entries cannot exceed 4294967295 bytes.");
+                throw new Exception("Entries cannot exceed 4294967295 bytes.");
 
-            if (!isset($modified) or !is_int($modified))
+            if (!isset($modified))
                 $modified = time();
+
+            if (!is_int($modified))
+                throw new Exception("Last-modified timestamp must be an integer.");
 
             $time = $this->msdos_time($modified);
             $date = $this->msdos_date($modified);
