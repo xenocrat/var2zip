@@ -14,13 +14,16 @@ var2zip is a PHP class for creating simple Zip archives in RAM.
 
 ## Usage
 
-Create a new instance and add an entry:
+Create a new instance:
 
     $var2zip = new var2zip();
+
+Add an entry read from disk:
+
     $file = file_get_contents("README.md");
     $var2zip->add("README.md", $file);
 
-Add an entry with last-modified date:
+Add an entry with last-modified timestamp:
 
     $modified = strtotime("1982-09-09T20:19:11Z");
     $var2zip->add("hello.txt", "Hello, world!", $modified);
