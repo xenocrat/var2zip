@@ -33,7 +33,6 @@
         }
 
         private function msdos_time($timestamp) {
-            # MS-DOS epoch is 1980-01-01T00:00:00Z.
             if ($timestamp < self::MSDOS_EPOCH)
                 $timestamp = self::MSDOS_EPOCH;
 
@@ -45,7 +44,6 @@
         }
 
         private function msdos_date($timestamp) {
-            # MS-DOS epoch is 1980-01-01T00:00:00Z.
             if ($timestamp < self::MSDOS_EPOCH)
                 $timestamp = self::MSDOS_EPOCH;
 
