@@ -9,7 +9,7 @@
         public function add($name, $contents, $modified = null) {
             $name = str_replace(array("\\", "/"), "", $name);
 
-            if (count($this->entries) = 0xffff)
+            if (count($this->entries) == 0xffff)
                 throw new Exception("Zip archive cannot contain more than 65535 entries.");
 
             if (strlen($name) > 0xffff)
@@ -24,8 +24,7 @@
             if (!is_int($modified))
                 throw new Exception("Last-modified timestamp must be an integer.");
 
-            $time = $this->msdos_time($modified);
-            $date = $this->msdos_date($modified);
+            list($date, $time) = $this->msdos_datetime($modified);
 
             $this->entries[] = array("name" => $name,
                                      "orig" => $contents,
@@ -35,26 +34,17 @@
             return count($this->entries);
         }
 
-        private function msdos_time($timestamp) {
+        private function msdos_datetime($timestamp) {
             if ($timestamp < self::MSDOS_EPOCH)
                 $timestamp = self::MSDOS_EPOCH;
 
             $when = getdate($timestamp);
 
-            # Generate MS-DOS time format.
-            $time = 0 | $when["seconds"] >> 1 | $when["minutes"] << 5 | $when["hours"] << 11;
-            return $time;
-        }
-
-        private function msdos_date($timestamp) {
-            if ($timestamp < self::MSDOS_EPOCH)
-                $timestamp = self::MSDOS_EPOCH;
-
-            $when = getdate($timestamp);
-
-            # Generate MS-DOS date format.
+            # Generate MS-DOS date/time format.
             $date = 0 | $when["mday"] | $when["mon"] << 5 | ($when["year"] - 1980) << 9;
-            return $date;
+            $time = 0 | $when["seconds"] >> 1 | $when["minutes"] << 5 | $when["hours"] << 11;
+
+            return array($date, $time);
         }
 
         public function export() {
