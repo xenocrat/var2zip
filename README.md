@@ -16,7 +16,7 @@ var2zip is a PHP class for creating simple Zip archives in RAM.
 
 Create a new instance:
 
-    $var2zip = new var2zip();
+    $var2zip = new \xenocrat\var2zip();
 
 Add an entry read from disk:
 
