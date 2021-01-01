@@ -1,6 +1,8 @@
 <?php
+    namespace xenocrat;
+
     class var2zip {
-        const VAR2ZIP_VERSION_MAJOR = 1;
+        const VAR2ZIP_VERSION_MAJOR = 2;
         const VAR2ZIP_VERSION_MINOR = 0;
         const MSDOS_EPOCH           = 315532800;
 
@@ -10,19 +12,19 @@
             $name = str_replace(array("\\", "/"), "", $name);
 
             if (count($this->entries) == 0xffff)
-                throw new Exception("Zip archive cannot contain more than 65535 entries.");
+                throw new \Exception("Zip archive cannot contain more than 65535 entries.");
 
             if (strlen($name) > 0xffff)
-                throw new Exception("Entry names cannot exceed 65535 bytes.");
+                throw new \Exception("Entry names cannot exceed 65535 bytes.");
 
             if (strlen($contents) > 0xffffffff)
-                throw new Exception("Entries cannot exceed 4294967295 bytes.");
+                throw new \Exception("Entries cannot exceed 4294967295 bytes.");
 
             if (!isset($modified))
                 $modified = time();
 
             if (!is_int($modified))
-                throw new Exception("Last-modified timestamp must be an integer.");
+                throw new \Exception("Last-modified timestamp must be an integer.");
 
             list($date, $time) = $this->msdos_datetime($modified);
 
@@ -65,7 +67,7 @@
                     $zlib = gzcompress($orig, 6, ZLIB_ENCODING_DEFLATE);
 
                     if ($zlib === false)
-                        throw new Exception("ZLIB compression failed.");
+                        throw new \Exception("ZLIB compression failed.");
 
                     # Trim ZLIB header and checksum from the deflated data.
                     $zlib = substr(substr($zlib, 0, strlen($zlib) - 4), 2);
