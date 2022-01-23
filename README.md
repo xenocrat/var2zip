@@ -4,7 +4,7 @@ var2zip is a PHP class for creating simple Zip archives in RAM.
 
 ## Requirements
 
-* PHP 5.4+
+* PHP 8.0+
 * ZLIB extension (optional)
 
 ## Limitations
