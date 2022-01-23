@@ -2,13 +2,13 @@
     namespace xenocrat;
 
     class var2zip {
-        const VAR2ZIP_VERSION_MAJOR = 2;
+        const VAR2ZIP_VERSION_MAJOR = 3;
         const VAR2ZIP_VERSION_MINOR = 0;
         const MSDOS_EPOCH           = 315532800;
 
         private $entries            = array();
 
-        public function add($name, $contents, $modified = null) {
+        public function add($name, $contents, $modified = null): int {
             $name = str_replace(array("\\", "/"), "", $name);
 
             if (count($this->entries) == 0xffff)
@@ -36,7 +36,7 @@
             return count($this->entries);
         }
 
-        private function msdos_datetime($timestamp) {
+        private function msdos_datetime($timestamp): array {
             if ($timestamp < self::MSDOS_EPOCH)
                 $timestamp = self::MSDOS_EPOCH;
 
@@ -49,7 +49,7 @@
             return array($date, $time);
         }
 
-        public function export() {
+        public function export(): string {
             $file = "";
             $cdir = "";
             $eocd = "";
