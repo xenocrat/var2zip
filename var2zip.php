@@ -6,6 +6,8 @@
         const VAR2ZIP_VERSION_MINOR = 0;
         const MSDOS_EPOCH           = 315532800;
 
+        public $compression_level   = 6;
+
         private $entries            = array();
 
         public function add($name, $contents, $modified = null): int {
@@ -45,8 +47,18 @@
             $when = getdate($timestamp);
 
             # Generate MS-DOS date/time format.
-            $date = 0 | $when["mday"] | $when["mon"] << 5 | ($when["year"] - 1980) << 9;
-            $time = 0 | $when["seconds"] >> 1 | $when["minutes"] << 5 | $when["hours"] << 11;
+            $date = (
+                0 |
+                $when["mday"] |
+                $when["mon"] << 5 |
+                ($when["year"] - 1980) << 9
+            );
+            $time = (
+                0 |
+                $when["seconds"] >> 1 |
+                $when["minutes"] << 5 |
+                $when["hours"] << 11
+            );
 
             return array($date, $time);
         }
@@ -55,6 +67,13 @@
             $file = "";
             $cdir = "";
             $eocd = "";
+            $level = (int) $this->compression_level;
+
+            if ($level < 0 or $level > 9)
+                $level = 6;
+
+            if (!function_exists("gzcompress"))
+                throw new \Exception("ZLIB support required.");
 
             foreach ($this->entries as $entry) {
                 $name = $entry["name"];
@@ -65,8 +84,8 @@
                 $comp = $orig;
                 $method = "\x00\x00";
 
-                if (function_exists("gzcompress")) {
-                    $zlib = gzcompress($orig, 6, ZLIB_ENCODING_DEFLATE);
+                if ($level > 0) {
+                    $zlib = gzcompress($orig, $level, ZLIB_ENCODING_DEFLATE);
 
                     if ($zlib === false)
                         throw new \Exception("ZLIB compression failed.");
