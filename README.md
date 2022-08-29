@@ -28,7 +28,7 @@ Add an entry with last-modified timestamp:
     $modified = strtotime("1982-09-09T20:19:11Z");
     $var2zip->add("hello.txt", "Hello, world!", $modified);
 
-Set the compression level (0-9):
+Set the compression level (1-9, or 0 to disable):
 
     $var2zip->compression_level = 9;
 
