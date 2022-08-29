@@ -72,7 +72,7 @@
             if ($level < 0 or $level > 9)
                 $level = 6;
 
-            if (!function_exists("gzcompress"))
+            if ($level > 0 and !function_exists("gzcompress"))
                 throw new \Exception("ZLIB support required.");
 
             foreach ($this->entries as $entry) {
