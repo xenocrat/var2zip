@@ -3,7 +3,7 @@
 
     class var2zip {
         const VAR2ZIP_VERSION_MAJOR = 3;
-        const VAR2ZIP_VERSION_MINOR = 0;
+        const VAR2ZIP_VERSION_MINOR = 1;
         const MSDOS_EPOCH           = 315532800;
 
         public $compression_level   = 6;
