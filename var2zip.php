@@ -28,10 +28,12 @@
 
             list($date, $time) = $this->msdos_datetime($modified);
 
-            $this->entries[] = array("name" => $name,
-                                     "orig" => $contents,
-                                     "time" => $time,
-                                     "date" => $date);
+            $this->entries[] = array(
+                "name" => $name,
+                "orig" => $contents,
+                "time" => $time,
+                "date" => $date
+            );
 
             return count($this->entries);
         }
