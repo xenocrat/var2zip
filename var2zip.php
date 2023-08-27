@@ -3,7 +3,7 @@
 
     class var2zip {
         const VAR2ZIP_VERSION_MAJOR = 3;
-        const VAR2ZIP_VERSION_MINOR = 2;
+        const VAR2ZIP_VERSION_MINOR = 3;
         const MSDOS_EPOCH           = 315532800;
 
         public $compression_level   = 6;
@@ -11,6 +11,12 @@
         private $entries            = array();
 
         public function add($name, $contents, $modified = null): int {
+            if (!is_string($name))
+                throw new \Exception("Name must be a string.");
+
+            if (!is_string($contents))
+                throw new \Exception("Entry must be supplied as a string.");
+
             $name = str_replace(array("\\", "/"), "", $name);
 
             if (count($this->entries) == 0xffff)
