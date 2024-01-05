@@ -3,7 +3,7 @@
 
     class var2zip {
         const VAR2ZIP_VERSION_MAJOR = 3;
-        const VAR2ZIP_VERSION_MINOR = 3;
+        const VAR2ZIP_VERSION_MINOR = 4;
         const MSDOS_EPOCH           = 315532800;
 
         public $compression_level   = 6;
@@ -12,27 +12,39 @@
 
         public function add($name, $contents, $modified = null): int {
             if (!is_string($name))
-                throw new \Exception("Name must be a string.");
+                throw new \InvalidArgumentException(
+                    "Name must be a string."
+                );
 
             if (!is_string($contents))
-                throw new \Exception("Entry must be supplied as a string.");
+                throw new \InvalidArgumentException(
+                    "Entry must be supplied as a string."
+                );
 
             $name = str_replace(array("\\", "/"), "", $name);
 
             if (count($this->entries) == 0xffff)
-                throw new \Exception("Zip archive cannot contain more than 65535 entries.");
+                throw new \OverflowException(
+                    "Zip archive cannot contain more than 65535 entries."
+                );
 
             if (strlen($name) > 0xffff)
-                throw new \Exception("Entry names cannot exceed 65535 bytes.");
+                throw new \LengthException(
+                    "Entry names cannot exceed 65535 bytes."
+                );
 
             if (strlen($contents) > 0xffffffff)
-                throw new \Exception("Entries cannot exceed 4294967295 bytes.");
+                throw new \LengthException(
+                    "Entries cannot exceed 4294967295 bytes."
+                );
 
             if (!isset($modified))
                 $modified = time();
 
             if (!is_int($modified))
-                throw new \Exception("Last-modified timestamp must be an integer.");
+                throw new \InvalidArgumentException(
+                    "Last-modified timestamp must be an integer."
+                );
 
             list($date, $time) = $this->msdos_datetime($modified);
 
@@ -79,7 +91,9 @@
                 $level = 6;
 
             if ($level > 0 and !function_exists("gzcompress"))
-                throw new \Exception("ZLIB support required.");
+                throw new \BadFunctionCallException(
+                    "ZLIB support required."
+                );
 
             foreach ($this->entries as $entry) {
                 $name = $entry["name"];
@@ -94,7 +108,9 @@
                     $zlib = gzcompress($orig, $level, ZLIB_ENCODING_DEFLATE);
 
                     if ($zlib === false)
-                        throw new \Exception("ZLIB compression failed.");
+                        throw new \UnexpectedValueException(
+                            "ZLIB compression failed."
+                        );
 
                     # Trim ZLIB header and checksum from the deflated data.
                     $zlib = substr(substr($zlib, 0, strlen($zlib) - 4), 2);
