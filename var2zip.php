@@ -2,15 +2,20 @@
     namespace xenocrat;
 
     class var2zip {
-        const VAR2ZIP_VERSION_MAJOR = 3;
-        const VAR2ZIP_VERSION_MINOR = 4;
+        const VERSION_MAJOR         = 3;
+        const VERSION_MINOR         = 4;
+        const VERSION_PATCH         = 0;
         const MSDOS_EPOCH           = 315532800;
 
         public $compression_level   = 6;
 
         private $entries            = array();
 
-        public function add($name, $contents, $modified = null): int {
+        public function add(
+            $name,
+            $contents,
+            $modified = null
+        ): int {
             if (!is_string($name))
                 throw new \InvalidArgumentException(
                     "Name must be a string."
@@ -58,7 +63,9 @@
             return count($this->entries);
         }
 
-        private function msdos_datetime($timestamp): array {
+        private function msdos_datetime(
+            $timestamp
+        ): array {
             if ($timestamp < self::MSDOS_EPOCH)
                 $timestamp = self::MSDOS_EPOCH;
 
@@ -81,7 +88,8 @@
             return array($date, $time);
         }
 
-        public function export(): string {
+        public function export(
+        ): string {
             $file = "";
             $cdir = "";
             $eocd = "";
