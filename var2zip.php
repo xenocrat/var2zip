@@ -3,7 +3,7 @@
 
     class var2zip {
         const VERSION_MAJOR         = 3;
-        const VERSION_MINOR         = 4;
+        const VERSION_MINOR         = 5;
         const VERSION_PATCH         = 0;
         const MSDOS_EPOCH           = 315532800;
 
